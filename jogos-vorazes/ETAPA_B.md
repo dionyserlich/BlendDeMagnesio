@@ -15,7 +15,9 @@ Os dois projetos ficam em `variantes/`. Foram gerados a partir do 3MF original p
 ## Por que cada mudança
 
 - **4 cópias por mesa.** Cada camada passa a durar mais que o tempo mínimo de 8 s. Com isso, o fatiador para de desacelerar as camadas, e a parede externa sai a 60 mm/s em toda a altura, com brilho uniforme. A preparação e o timelapse também passam a ser divididos por 4.
-  - As cópias ficam em linha ao longo de X, com a mesma orientação do original. Entre uma peça e outra só a cabeça se move; a mesa (eixo Y) não faz movimentos longos com as peças altas em cima, que tocam a placa em só 8 mm².
+  - As cópias ficam em linha ao longo de X, com a mesma orientação do original. A mesa (eixo Y) continua se movendo dentro de cada peça, mas, comparado a uma grade 2 × 2, a fila evita ~800 deslocamentos longos da mesa por impressão (~22 % menos). Isso importa porque as peças são altas e tocam a placa em só 8 mm².
+  - Em cada camada, a ordem é da direita para a esquerda (X 199 → 154 → 109 → 64), com uma volta de ~135 mm à direita na troca de camada.
+  - O Bambu Studio não confere a distância entre cópias do mesmo objeto. **Não gire nem mude a escala de uma cópia isolada**: ela vira um objeto separado, com suporte gerado à parte.
   - Espaçamento:
     - 45 mm entre os centros;
     - 26,0 mm entre as malhas (o "Organizar" do Bambu reserva 24 mm com suporte em árvore);
@@ -59,7 +61,7 @@ Os dois projetos ficam em `variantes/`. Foram gerados a partir do 3MF original p
 
 ## Teste de impressão e critérios
 
-Imprima uma mesa com as 4 peças e compare com a peça que você já tem, impressa com o G-code original. Use o mesmo rolo e a mesma placa. Tempo projetado: **~4h16m de impressão real** (~1h04m por peça), contra ~1h15m por peça hoje sem timelapse. É uma projeção sobre os caminhos antigos; o Arachne pode mudar um pouco esse número.
+Imprima uma mesa com as 4 peças e compare com a peça que você já tem, impressa com o G-code original. Use o mesmo rolo e a mesma placa. As 4 peças ficam na mesma faixa de Y. Então o teste compara posições da esquerda para a direita e a ordem de impressão em cada camada (a primeira peça, em X 199, e a última, em X 64), não frente contra fundo da mesa. Tempo projetado: **~4h16m de impressão real** (~1h04m por peça), contra ~1h15m por peça hoje sem timelapse. É uma projeção sobre os caminhos antigos; o Arachne pode mudar um pouco esse número.
 
 | Critério | Como avaliar | Aprovado se |
 |---|---|---|

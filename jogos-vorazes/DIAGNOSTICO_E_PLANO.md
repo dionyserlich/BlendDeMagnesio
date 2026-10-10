@@ -224,7 +224,7 @@ Limitações da estimativa:
 
 Considero aceitável uma diferença de até ±5 % entre o projetado e o medido.
 
-**Impressão de teste representativa.** Uma mesa da "Produção A" com 4 peças, timelapse desligado, ~4h20m. Ela será comparada com a peça T0 da Etapa A, feita com o mesmo rolo, a mesma impressora e a mesma placa. As 4 peças cobrem frente e fundo da mesa, onde o resfriamento e os deslocamentos são diferentes.
+**Impressão de teste representativa.** Uma mesa da "Produção A" com 4 peças, timelapse desligado, ~4h20m. Ela será comparada com a peça T0 da Etapa A, feita com o mesmo rolo, a mesma impressora e a mesma placa. As 4 peças ficam em fila ao longo de X, como na produção (veja `ETAPA_B.md`). O teste compara posições da esquerda para a direita e a primeira e a última peça na ordem de impressão de cada camada.
 
 **Critérios de aceitação** (a peça nova deve ficar igual ou melhor que a T0 em todos):
 
