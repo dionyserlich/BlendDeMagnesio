@@ -12,6 +12,7 @@ A análise por trás das escolhas foi feita no código-fonte do Bambu Studio 02.
 |---|---|---|
 | `variantes/Jogos_Vorazes_producao_4pecas_C1_preenchimento.3mf` | `infill_combination` 0 → 1 e `sparse_infill_density` 15 % → 12 % | ~2,5–3,5 min |
 | `variantes/Jogos_Vorazes_producao_4pecas_C2_paredes_verticais.3mf` | `ensure_vertical_shell_thickness` enabled → partial | ~3–6 min |
+| `variantes/Jogos_Vorazes_producao_4pecas_C3_combinado.3mf` | C1 + C2 juntos. **Só para usar depois que C1 e C2 forem aprovados separadamente** | — |
 
 Os ganhos são projeções do meu simulador. Na Etapa B ele foi **pessimista**: projetou 47 min a mais por mesa que o Bambu. Então os números servem só para orientar; quem decide é o tempo do Bambu ao fatiar e o cronômetro.
 
@@ -75,3 +76,42 @@ Comece pela mesa de maior ganho no tempo do Bambu (provavelmente a C2). Compare 
 | Tempo | Cronômetro da mesa | Perto da estimativa do Bambu |
 
 Se uma mudança passar e a outra não, a produção fica só com a que passou.
+
+## Resultado do fatiamento (validação)
+
+Os dois G-codes que você fatiou no Bambu Studio 02.08.02.60 estão em `fatiados/`, compactados como vieram. As análises estão em `analise/gcode_C1_*` e `analise/gcode_C2_*`. Os números abaixo são **por peça** (total da mesa ÷ 4).
+
+| | Etapa B | C1 preenchimento | C2 paredes verticais |
+|---|---:|---:|---:|
+| Tempo total do Bambu (mesa, com timelapse) | 4h02m | 3h46m51s | 3h42m39s |
+| Mesa sem timelapse (−12m18s) | 3h49m33s | 3h34m33s | 3h30m21s |
+| **Por peça, sem timelapse** | **57m23s** | **53m38s** (−3m45s) | **52m35s** (−4m48s) |
+| Filamento por peça | 9,22 g | 8,68 g | 8,45 g |
+
+**C1: a mudança aconteceu como previsto.**
+- **Preenchimento combinado:** 1328 blocos de preenchimento com `LAYER_HEIGHT: 0.32`, a 61,5 mm/s (F3688).
+- **Preenchimento esparso:** 10,3 m e 1227 mm³ por peça. Antes eram 25,5 m e 1664 mm³; a previsão era de 11–12 m e 1200–1250 mm³.
+- **O resto não mudou:** paredes externas e internas, suporte, "Floating vertical shell" e sólido interno ficaram iguais.
+
+**C2: a mudança aconteceu como previsto.**
+- **Sólido interno:** "Floating vertical shell" + sólido interno + ponte caiu de ~1035 para 277 mm³ por peça (previsão: 250–450).
+- **Encostas:** a faixa sólida sumiu entre Z 16 e 56 mm. Sobra um pouco em Z 0–16 (no fundo do furo).
+- **Sólidos das cabeças (Z 48–64):** continuam (2,2 m por peça).
+- **Ponto extra a olhar no teste:** a parte de baixo da peça, de Z 0 a 8 mm, perdeu ~1 m de sólido interno por peça. É o lado que fica sobre os suportes, e a casca ali ficou mais fina.
+- **O resto não mudou:** as paredes e o suporte ficaram iguais.
+
+**Nas duas:**
+- a parede externa sai a 60 mm/s em todas as camadas, menos a primeira faixa de 0–4 mm (base e saliências);
+- quase não há desaceleração por tempo mínimo de camada (18 e 9 camadas).
+
+**O meu simulador bate com o Bambu nos G-codes reais.** Ele calcula 3h23m19s de impressão para o C2, e o Bambu dá ~3h23m47s (3h36m05s menos o timelapse). A diferença de 47 min da Etapa B veio da projeção feita a partir do G-code de 1 peça, não do cálculo de tempo.
+
+**C3 (combinado).** Não fatiei, mas a soma dos dois ganhos dá cerca de −34 min por mesa: ~3h15m sem timelapse, **~49 min por peça**. O ganho pode ser um pouco maior, porque o preenchimento que entra no lugar das faixas sólidas também passa a ser combinado.
+
+### Próximo passo
+
+As mesas de teste são mesas de produção: se passarem nos critérios, as 4 peças podem ser vendidas. Ordem sugerida:
+
+1. **Mesa C2** (maior ganho). Inspeção com foco nas encostas (Z 32–52), dentro do furo (Z 8–24), topo das cabeças e parte de baixo (Z 0–8).
+2. **Mesa C1.** Inspeção com foco em textura a cada 2 camadas (Z 24–48) e no peso: ~0,5 g a menos por peça.
+3. Se as duas passarem, a produção passa a usar o **C3**. Uma última conferência visual na primeira mesa dele.

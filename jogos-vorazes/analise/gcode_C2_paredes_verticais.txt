@@ -1,0 +1,48 @@
+Arquivo: /tmp/claude-0/-home-user-BlendDeMagnesio/9a1dcd43-de9f-5228-9312-5f6da0bc1200/scratchpad/etapa_c_a/3h43m.gcode
+Bambu Studio — tempo do modelo / total: 3h 36m 5s / 3h 42m 39s
+Script — impressão (camadas, sem blocos condicionais): 3h23m19s
+Script — blocos condicionais (timelapse/detecção):     0h14m26s
+Script — G-code de início/fim (sem esperas de aquecimento): 0h02m07s
+Script — impressão sem a desaceleração de resfriamento:     3h23m09s  (resfriamento acrescenta 0h00m10s)
+
+Tipo de linha                          tempo  % imp. s/ desac.       mm     mm³
+Outer wall                          1h03m59s    31.5  1h03m58s   119173    7216
+Inner wall                          0h38m38s    19.0  0h38m38s   109010    7119
+Sparse infill                       0h27m57s    13.8  0h27m57s   110590    7208
+Deslocamento                        0h23m55s    11.8  0h23m55s        0       0
+Support                             0h15m08s     7.4  0h14m58s    70791    4453
+Wipe (limpeza do bico)              0h10m21s     5.1  0h10m21s        0       0
+Z (troca de camada/z-hop)           0h10m12s     5.0  0h10m12s        0       0
+Retração/desretração                0h05m12s     2.6  0h05m12s        0       0
+Internal solid infill               0h04m01s     2.0  0h04m01s    10404     643
+Floating vertical shell             0h01m52s     0.9  0h01m52s     5970     381
+Overhang wall                       0h01m20s     0.7  0h01m20s      854      52
+Bridge                              0h00m18s     0.2  0h00m18s      755      82
+Support interface                   0h00m16s     0.1  0h00m16s      535      34
+Top surface                         0h00m06s     0.1  0h00m06s      184      11
+Gap infill                          0h00m03s     0.0  0h00m03s      100       3
+Transição                           0h00m00s     0.0  0h00m00s        3       0
+
+Camadas: 400. Desaceleradas pelo tempo mínimo de camada: 9 (paredes internas/preenchimento > 5% mais lentos); 1 com a parede externa abaixo de 60 mm/s.
+
+Velocidade predominante da parede externa por faixa de altura (mm/s):
+   0– 4 mm: mín  10  mediana  30  máx  60
+   4– 8 mm: mín  60  mediana  60  máx  60
+   8–12 mm: mín  60  mediana  60  máx  60
+  12–16 mm: mín  60  mediana  60  máx  60
+  16–20 mm: mín  60  mediana  60  máx  60
+  20–24 mm: mín  60  mediana  60  máx  60
+  24–28 mm: mín  60  mediana  60  máx  60
+  28–32 mm: mín  60  mediana  60  máx  60
+  32–36 mm: mín  60  mediana  60  máx  60
+  36–40 mm: mín  60  mediana  60  máx  60
+  40–44 mm: mín  60  mediana  60  máx  60
+  44–48 mm: mín  60  mediana  60  máx  60
+  48–52 mm: mín  60  mediana  60  máx  60
+  52–56 mm: mín  60  mediana  60  máx  60
+  56–60 mm: mín  60  mediana  60  máx  60
+  60–64 mm: mín  20  mediana  60  máx  60
+  64–68 mm: mín  20  mediana  20  máx  20
+
+Deslocamentos: {'quantidade': 20731, 'distancia_total_mm': 350318, 'mediana_mm': 7.27, 'p90_mm': 40.35, 'acima_de_20mm': 4406}
+Contagens: {'retracoes': 12548, 'arcos': 215386, 'comandos_ventoinha': 20031, 'deslocamentos': 20731, 'movimentos_z': 12533, 'zhop_espiral': 4862}

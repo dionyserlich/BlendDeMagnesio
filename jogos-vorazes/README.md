@@ -9,6 +9,7 @@ Otimização do tempo de impressão para Bambu Lab A1 com PLA Silk dourado Maste
   - `Jogos_Vorazes_producao_4pecas.3mf`: 4 cópias por mesa (produção aprovada na Etapa B).
   - `Jogos_Vorazes_1peca.3mf`: para pedidos de uma peça.
   - `Jogos_Vorazes_producao_4pecas_C1_preenchimento.3mf`, `..._C2_paredes_verticais.3mf`: testes da Etapa C.
+  - `Jogos_Vorazes_producao_4pecas_C3_combinado.3mf`: C1 + C2, para usar depois que os dois forem aprovados.
 - `original/`: projeto 3MF e G-code originais, só para leitura, com `SHA256SUMS`. Nunca são alterados.
 - `fatiados/`: G-codes fatiados pelo Bambu Studio a partir das variantes, guardados para validação (com `SHA256SUMS`).
 - `ferramentas/`: scripts Python somente leitura.
