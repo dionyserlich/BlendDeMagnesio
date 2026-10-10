@@ -115,3 +115,11 @@ As mesas de teste são mesas de produção: se passarem nos critérios, as 4 pe�
 1. **Mesa C2** (maior ganho). Inspeção com foco nas encostas (Z 32–52), dentro do furo (Z 8–24), topo das cabeças e parte de baixo (Z 0–8).
 2. **Mesa C1.** Inspeção com foco em textura a cada 2 camadas (Z 24–48) e no peso: ~0,5 g a menos por peça.
 3. Se as duas passarem, a produção passa a usar o **C3**. Uma última conferência visual na primeira mesa dele.
+
+### Testes de impressão
+
+- **Resultado relatado: C1 e C2 passaram nos critérios.**
+- **Produção:** passa a usar `variantes/Jogos_Vorazes_producao_4pecas_C3_combinado.3mf` (C1 + C2).
+- **Na primeira mesa do C3**, faça uma última conferência visual com os mesmos critérios. Ele junta as duas mudanças nas mesmas regiões: o preenchimento que substitui as faixas sólidas das encostas também passa a ser combinado.
+- **Tempo:** fatie o C3 e anote o tempo do Bambu. A estimativa é de ~3h15m por mesa sem timelapse, ~49 min por peça.
+- **Pedido de 1 peça:** continua com `Jogos_Vorazes_1peca.3mf`. Ao aplicar C1 ou C2 nele, a parede externa pode desacelerar nas camadas curtas, porque sobra menos preenchimento para o resfriamento desacelerar no lugar dela. Só aplicar depois de fatiar e conferir a velocidade da parede externa por altura.
