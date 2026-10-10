@@ -1,0 +1,15 @@
+Cenário                                                             mesa  por peça   ganho  ext@60
+Original (1 peça, timelapse ligado)                             1h28m07s  1h28m07s    0.0%   37.5%
+1 peça, timelapse desligado                                     1h15m15s  1h15m15s   14.6%   37.5%
+1 peça, "consistent surface", timelapse desligado               1h15m55s  1h15m55s   13.8%   80.9%
+2 peças, timelapse desligado                                    2h17m34s  1h08m47s   21.9%   81.1%
+3 peças, timelapse desligado                                    3h24m08s  1h08m03s   22.8%   81.6%
+4 peças, timelapse desligado                                    4h30m49s  1h07m42s   23.2%   81.7%
+6 peças, timelapse desligado                                    6h44m14s  1h07m22s   23.5%   81.9%
+8 peças, timelapse desligado                                    8h57m41s  1h07m13s   23.7%   81.9%
+4 peças, timelapse ligado                                       4h43m41s  1h10m55s   19.5%   81.7%
+4 peças, timelapse desligado, aceleração padrão 6000            4h16m06s  1h04m02s   27.3%   81.7%
+4 peças, idem, deslocamento entre peças 0,6 s (pessimista)      4h20m06s  1h05m02s   26.2%   81.7%
+4 peças, idem, aceleração da parede externa 3000 (não recomendado)  4h10m40s  1h02m40s   28.9%   81.7%
+4 peças, idem (aceleração 6000), fluxo máximo 10 mm³/s          4h14m18s  1h03m34s   27.9%   81.7%
+1 peça, tempo mínimo 5 s (referência; não recomendado)          1h10m47s  1h10m47s   19.7%   78.9%

@@ -1,3 +1,6 @@
+> Outros projetos neste repositório:
+> - [`jogos-vorazes/`](jogos-vorazes/): anel tordo × cobra em PLA Silk dourado. Diagnóstico de tempo e plano de otimização para a Bambu Lab A1.
+
 # Porta-ampola (pote + tampa rosqueada)
 
 Projeto do Bambu Studio para a impressora Bambu Lab A1 com bico de 0,4 mm e PLA genérico.

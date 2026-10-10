@@ -1,0 +1,11 @@
+Deslocamento detectado (G-code − 3MF): X +10.0 mm, Y +0.0 mm
+Parede externa → malha: mediana 0.210 mm, p95 0.232 mm, 0.75% dos pontos a mais de 0,45 mm
+Camadas com contorno sem extrusão a mais de 1.0 mm: 9
+  z= 55.88  trechos= 34  distância máx 3.61 mm  região X 119.7–120.0  Y 128.1–129.0 (coordenadas do 3MF)
+  z= 56.20  trechos= 94  distância máx 1.88 mm  região X 119.7–121.8  Y 133.9–135.9 (coordenadas do 3MF)
+  z= 56.52  trechos= 65  distância máx 1.91 mm  região X 120.2–121.7  Y 134.0–134.3 (coordenadas do 3MF)
+  z= 58.76  trechos= 16  distância máx 3.10 mm  região X 122.1–122.2  Y 134.4–134.5 (coordenadas do 3MF)
+  z= 59.08  trechos= 67  distância máx 3.16 mm  região X 120.3–122.3  Y 134.2–134.5 (coordenadas do 3MF)
+  z= 59.40  trechos= 78  distância máx 2.48 mm  região X 120.3–122.3  Y 134.1–134.4 (coordenadas do 3MF)
+  z= 59.72  trechos= 92  distância máx 2.79 mm  região X 120.3–122.4  Y 134.0–134.4 (coordenadas do 3MF)
+  z= 63.24  trechos=  8  distância máx 4.02 mm  região X 121.1–121.1  Y 129.4–129.6 (coordenadas do 3MF)

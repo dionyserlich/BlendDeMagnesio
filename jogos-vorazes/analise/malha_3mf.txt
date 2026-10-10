@@ -1,0 +1,53 @@
+{
+ "arquivo": "original/Jogos_Vorazes_malha_suavizada-02.3mf",
+ "tem_gcode_fatiado": false,
+ "tem_configuracao_de_projeto": true,
+ "perfis": {
+  "printer_settings_id": "Bambu Lab A1 0.4 nozzle",
+  "print_settings_id": "0.16mm High Quality @BBL A1",
+  "filament_settings_id": [
+   "Generic PLA Silk @BBL A1"
+  ],
+  "different_settings_to_system": [
+   "enable_support;seam_position",
+   "",
+   ""
+  ],
+  "version": "02.08.02.60"
+ },
+ "malha": {
+  "vertices": 488075,
+  "triangulos": 976150,
+  "bbox_min_mm": [
+   108.489,
+   95.888,
+   0.0
+  ],
+  "bbox_max_mm": [
+   127.511,
+   160.112,
+   64.053
+  ],
+  "dimensoes_mm": [
+   19.022,
+   64.224,
+   64.053
+  ],
+  "volume_mm3": 13443.0,
+  "area_superficie_mm2": 6066.1,
+  "area_media_triangulo_mm2": 0.00621,
+  "aresta_media_mm": 0.1198,
+  "pecas_soltas": 1,
+  "arestas_abertas": 0,
+  "arestas_com_mais_de_2_faces": 0,
+  "area_apoiada_na_mesa_mm2": 8.33,
+  "area_em_saliencia_por_angulo_mm2": {
+   "0-30°": 1728.8,
+   "30-45°": 553.7,
+   "45-60°": 386.3,
+   "60-75°": 207.4,
+   "75-90°": 59.3
+  },
+  "altura_mm": 64.053
+ }
+}

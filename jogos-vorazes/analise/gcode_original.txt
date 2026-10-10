@@ -1,0 +1,47 @@
+Arquivo: original/Jogos_Vorazes_furos_1-03mm_PLA_1h27m.gcode
+Bambu Studio — tempo do modelo / total: 1h 20m 38s / 1h 27m 11s
+Script — impressão (camadas, sem blocos condicionais): 1h08m11s
+Script — blocos condicionais (timelapse/detecção):     0h12m53s
+Script — G-code de início/fim (sem esperas de aquecimento): 0h02m07s
+Script — impressão sem a desaceleração de resfriamento:     1h04m04s  (resfriamento acrescenta 0h04m08s)
+
+Tipo de linha                          tempo  % imp. s/ desac.       mm     mm³
+Outer wall                          0h17m18s    25.4  0h16m38s    30582    1850
+Inner wall                          0h12m39s    18.5  0h11m40s    28241    1841
+Sparse infill                       0h09m04s    13.3  0h07m46s    25068    1634
+Deslocamento                        0h08m22s    12.3  0h08m22s        0       0
+Floating vertical shell             0h05m04s     7.4  0h04m58s    11612     768
+Support                             0h04m47s     7.0  0h04m03s    17698    1113
+Z (troca de camada/z-hop)           0h03m13s     4.7  0h03m13s        0       0
+Wipe (limpeza do bico)              0h02m59s     4.4  0h02m57s        0       0
+Internal solid infill               0h02m20s     3.4  0h02m03s     4513     285
+Retração/desretração                0h01m27s     2.1  0h01m28s        0       0
+Overhang wall                       0h00m23s     0.6  0h00m23s      232      15
+Gap infill                          0h00m18s     0.4  0h00m16s      459      14
+Bridge                              0h00m07s     0.2  0h00m07s      248      26
+Top surface                         0h00m06s     0.1  0h00m05s      151       9
+Support interface                   0h00m04s     0.1  0h00m04s      134       8
+
+Camadas: 400. Desaceleradas pelo tempo mínimo de camada: 345 (paredes internas/preenchimento > 5% mais lentos); 225 com a parede externa abaixo de 60 mm/s.
+
+Velocidade predominante da parede externa por faixa de altura (mm/s):
+   0– 4 mm: mín  10  mediana  60  máx  60
+   4– 8 mm: mín  60  mediana  60  máx  60
+   8–12 mm: mín  60  mediana  60  máx  60
+  12–16 mm: mín  49  mediana  56  máx  60
+  16–20 mm: mín  45  mediana  47  máx  51
+  20–24 mm: mín  40  mediana  43  máx  47
+  24–28 mm: mín  40  mediana  45  máx  52
+  28–32 mm: mín  48  mediana  60  máx  60
+  32–36 mm: mín  60  mediana  60  máx  60
+  36–40 mm: mín  60  mediana  60  máx  60
+  40–44 mm: mín  54  mediana  60  máx  60
+  44–48 mm: mín  39  mediana  43  máx  53
+  48–52 mm: mín  22  mediana  31  máx  40
+  52–56 mm: mín  20  mediana  23  máx  40
+  56–60 mm: mín  26  mediana  36  máx  41
+  60–64 mm: mín  20  mediana  37  máx  48
+  64–68 mm: mín  20  mediana  20  máx  20
+
+Deslocamentos: {'quantidade': 8902, 'distancia_total_mm': 108294, 'mediana_mm': 3.37, 'p90_mm': 27.0, 'acima_de_20mm': 1155}
+Contagens: {'retracoes': 3549, 'arcos': 94671, 'comandos_ventoinha': 12279, 'deslocamentos': 8902, 'movimentos_z': 3537, 'zhop_espiral': 1771}
