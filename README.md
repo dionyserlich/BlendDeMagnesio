@@ -1,3 +1,10 @@
+# Projetos de impressão 3D (Bambu Lab A1)
+
+- [`jogos-vorazes/`](jogos-vorazes/README.md): escultura tordo + serpente em PLA Silk. Otimização de tempo e de produção em lote, com o original preservado.
+- Porta-ampola (abaixo): ajuste dimensional e de parâmetros.
+
+---
+
 # Porta-ampola (pote + tampa rosqueada)
 
 Projeto do Bambu Studio para a impressora Bambu Lab A1 com bico de 0,4 mm e PLA genérico.

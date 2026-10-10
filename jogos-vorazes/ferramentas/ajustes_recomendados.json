@@ -1,0 +1,2 @@
+{"sparse_infill_pattern":"lightning","inner_wall_acceleration":"6000","sparse_infill_acceleration":"150%",
+ "different_settings_to_system":["enable_support;inner_wall_acceleration;seam_position;sparse_infill_acceleration;sparse_infill_pattern","",""]}
