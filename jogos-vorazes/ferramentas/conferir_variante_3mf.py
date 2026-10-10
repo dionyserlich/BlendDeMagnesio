@@ -103,9 +103,14 @@ def main():
     print(f'\nItens de montagem (<build>): {len(items)}')
     for it in items:
         print(f"  objeto {it['objectid']}  UUID {it['uuid']}  translação {it['translacao']}")
-    uuids = [it['uuid'] for it in items]
-    if len(set(uuids)) != len(uuids):
-        print('ERRO: UUIDs de item repetidos')
+    # O exportador do Bambu Studio grava o UUID do item a partir do objectid
+    # (bbs_3mf.cpp, _add_build_to_model_stream): instâncias do mesmo objeto
+    # repetem o UUID. Só é erro se objetos diferentes compartilharem um UUID.
+    by_uuid = {}
+    for it in items:
+        by_uuid.setdefault(it['uuid'], set()).add(it['objectid'])
+    if any(len(objs) > 1 for objs in by_uuid.values()):
+        print('ERRO: objetos diferentes com o mesmo UUID de item')
         ok = False
     for p in plates:
         ids = [i.get('identify_id') for i in p['instancias']]
