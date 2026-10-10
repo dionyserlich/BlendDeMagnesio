@@ -15,7 +15,7 @@ Esta é a **primeira entrega (Fase 1)**: diagnóstico e plano. Nenhuma configura
    - aumentar velocidade ou aceleração numa peça sozinha quase não reduz o tempo;
    - a **parede externa varia entre 20 e 60 mm/s conforme a altura**. Isso é um risco direto para o brilho uniforme do silk. A variação se concentra em duas faixas: 16–28 mm e 44–64 mm, a região das cabeças.
 5. **O maior ganho comercial vem de imprimir várias peças por mesa.** Com timelapse desligado e 3 a 6 peças por mesa, a projeção é de **−22% a −24% por peça**. Somando aceleração 6000 nas linhas internas, chega a **cerca de −27% por peça** (1h28m → 1h04m). Além disso, a parede externa passa a sair sempre a 60 mm/s, o que deixa o brilho mais uniforme.
-6. **Há perda de detalhe hoje.** Pontas finas perto do topo, com cerca de 0,3 mm de espessura (bico e presas), entre 56 e 63 mm de altura, não aparecem no G-code. O gerador de paredes "Clássico" descarta essas pontas. O "Arachne" deve recuperá-las.
+6. **Há perda de detalhe nas pontas das presas.** Perto do topo, entre 56 e 64 mm de altura, há seções isoladas minúsculas (0,01 a 0,4 mm², ou seja, ~0,1 a 0,7 mm de largura) que o G-code não imprime em todas as camadas. *Correção feita depois do re-fatiamento (Etapa B):* o gerador Arachne **não** resolve isso. Os dois geradores deixam de imprimir cerca de 1/4 dessas ilhas, em camadas diferentes (seção 4.5).
 
 ## 1. Arquivos e preservação
 
@@ -37,7 +37,7 @@ O projeto usa os perfis de sistema "0.16mm High Quality @BBL A1" e "Generic PLA 
 | Área | Valor atual | Observação |
 |---|---|---|
 | Camada | 0,16 mm (1ª camada 0,20) → 400 camadas | Perfil de alta qualidade |
-| Paredes | 2 voltas, gerador **Clássico**, `detect_thin_wall` desligado | Causa a perda das pontas finas (seção 4.5) |
+| Paredes | 2 voltas, gerador **Clássico**, `detect_thin_wall` desligado | Deixa de imprimir parte das pontas das presas, assim como o Arachne (seção 4.5) |
 | Topo/base | 6 / 4 camadas; `ensure_vertical_shell_thickness` = enabled | Gera o "Floating vertical shell" (5 min) |
 | Preenchimento | Gyroid 15 %, sem combinar camadas | |
 | Suporte | Árvore (auto), ângulo 25°, também apoiado sobre o modelo | 7 % do tempo; concentrado em 0–8 mm e 48–56 mm |
@@ -126,7 +126,19 @@ As duas primeiras mudanças afetam diretamente o acabamento e quase não rendem.
 
 O script `ferramentas/comparar_gcode_malha.py` corta a malha em cada camada amostrada e procura trechos do contorno sem nenhuma extrusão a menos de 1 mm.
 
-O resultado: trechos de ~0,3 mm de espessura e até 4 mm de comprimento, entre **Z 55,9 e 63,2 mm**, na região X 119,7–122,4 / Y 128–136 (coordenadas do 3MF). São as pontas das cabeças. Elas não são impressas porque, com o gerador Clássico e `detect_thin_wall` desligado, regiões mais finas que a linha de 0,42 mm são descartadas. O Arachne imprime essas regiões com linha de largura variável (mínimo de 25 % do bico).
+O resultado: trechos sem extrusão entre **Z 55,9 e 63,9 mm**, na região X 119,7–122,4 / Y 128–136 (coordenadas do 3MF). Com `--ilhas`, o script mostra o que são: seções isoladas da malha com 0,01 a 0,4 mm² de área, ou seja, as pontas das presas da cobra. São duas ilhas lado a lado, perto de X 120,5 e 122,2 / Y 134. Uma ponta afina para baixo até Z ≈ 56,7; a outra começa em Z ≈ 58,8 e engrossa até se juntar à mandíbula, perto de Z 61.
+
+*Correção feita depois do re-fatiamento (Etapa B).* A primeira versão desta seção dizia que o Arachne imprimiria essas pontas. O G-code real do Arachne mostra que não. Das 131 ilhas pequenas (até 2 mm²) nas 400 camadas:
+
+| Gerador | Ilhas não impressas | Soma das áreas não impressas |
+|---|---:|---:|
+| Clássico (original) | 33 | 3,40 mm² × camada |
+| Arachne | 32 | 4,16 mm² × camada |
+
+- Os dois perdem ilhas, mas em camadas diferentes. O Clássico imprime a ponta de cima entre Z 59,9 e 61,0 como pequenos laços; o Arachne não imprime nada ali (conferido direto no G-code em Z 60,68).
+- O Arachne, por sua vez, imprime trechos em Z 55,9–56,4, 59,1–59,7 e 63,1 que o Clássico perdia.
+- Ilhas com menos de ~0,5 mm de largura ficam no limite do que um bico de 0,4 mm consegue fazer, com qualquer gerador. Para imprimi-las sempre, seria preciso engrossar as presas no modelo ou usar um bico menor. As duas opções mudam o produto ou o tempo e não foram aplicadas.
+- O critério final é a comparação física das presas: peça T0 (Clássico) contra o teste de 4 peças (Arachne).
 
 ### 4.6 Suportes
 
@@ -151,7 +163,7 @@ O ganho por peça é contado a partir do original (1h27m–1h28m) e vem do simul
 | 1 | **Timelapse desligado na produção** (opção no envio) | **−12,9 min (−15 %)**, se hoje está ligado | Nenhum | Muito baixa: cronometrar |
 | 2 | **3 a 6 peças por mesa**, impressão por camada | **−7 a −8 min a mais**: total de −22 % a −24 % contra o original; 1h07–1h08 por peça | Baixo–médio. A parede externa fica a 60 mm/s constante, com brilho mais uniforme, mas diferente das peças atuais nas faixas lentas. Há mais deslocamentos entre peças, com risco de fio | Média: uma mesa de teste |
 | 3 | **Aceleração padrão 4000 → 6000** (a parede externa e o topo ficam em 2000) | −3,7 min (−4 %) com várias peças; ~0 com uma peça | Baixo (linhas escondidas) | Média |
-| 4 | **Gerador Arachne** (paredes) | ~0; medir ao re-fatiar | **Melhora**: recupera as pontas finas | Média: script de comparação + lupa |
+| 4 | **Gerador Arachne** (paredes) | ~0. Medido: sem efeito claro no tempo | Neutro. Elimina o gap fill atrás da parede externa (459 → 27 mm por peça), mas **não** recupera as pontas das presas (seção 4.5) | Média: script de comparação + lupa |
 | 5 | `consistent_surface`, só se imprimir uma peça | +0,7 min (+1 %) | **Melhora**: parede externa a 60 mm/s em 81 % do comprimento, contra 37 % hoje | Média |
 | 6 | Preenchimento: combinar a cada 2 camadas e 10–12 % | −2 a −4 min (re-fatiar; só ajuda com várias peças) | Baixo | Baixa–média |
 | 7a | Camada de 0,20 mm na peça inteira | −15 % a −20 % (re-fatiar) | **Alto**: o silk realça linhas de camada nas encostas e no topo, e há perda de resolução vertical nas escamas e penas | Alta: A/B lado a lado |
@@ -203,7 +215,7 @@ A pegada de cada peça com suportes é de ~26 × 66 mm. A mesa de 256 × 256 mm 
 4. Eu rodo `analisar_gcode.py`, `projetar_cenarios.py` e `comparar_gcode_malha.py` e comparo com o original:
    - tempo;
    - velocidade da parede externa por altura;
-   - pontas finas recuperadas;
+   - ilhas pequenas (pontas das presas) impressas ou não, com `--ilhas`;
    - nenhum comando de máquina alterado.
 
 ### Etapa C: ganhos adicionais, só se a Etapa B for aprovada visualmente
@@ -231,7 +243,7 @@ Considero aceitável uma diferença de até ±5 % entre o projetado e o medido.
 | Critério | Como avaliar |
 |---|---|
 | Brilho uniforme | Fotos com uma única luz a 45° e câmera fixa, girando a peça em 4 posições de 90°. Não pode haver faixa horizontal de brilho ou tom, principalmente em 16–28 mm e 44–64 mm. As 4 peças da mesa devem ter o mesmo tom. |
-| Detalhes | Pontas do bico e das presas presentes (Z 56–63 mm). Escamas e penas nítidas, sem bolhas. `comparar_gcode_malha.py` sem regiões perdidas maiores que 1 mm, ou com cada uma explicada. |
+| Detalhes | Pontas das presas (Z 56–64 mm) iguais ou melhores que na T0, vistas com lupa. Escamas e penas nítidas, sem bolhas. `comparar_gcode_malha.py --ilhas` sem mais ilhas perdidas que o original. |
 | Dimensões | Paquímetro: altura 64,05 mm, Y 64,2 mm, X 19,0 mm, todos com tolerância de ±0,2 mm, e iguais à T0. |
 | Defeitos | Fios entre as peças, pontos da costura, marcas de suporte no arco interno e sob as cabeças (nota de 0 a 3), pé de elefante, deslocamento de camada, subextrusão, queda nas saliências. |
 | Tempo | Tempo real por peça no máximo 5 % acima do projetado. |

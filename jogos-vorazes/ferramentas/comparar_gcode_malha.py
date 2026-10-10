@@ -11,8 +11,13 @@ Somente leitura. Para camadas amostradas:
 O deslocamento em X/Y entre a posição no .3mf e no G-code é detectado
 alinhando as caixas envolventes.
 
+Com --ilhas, também lista, camada a camada, as ilhas pequenas da malha
+(seções isoladas com área até --area-max, como pontas de presas e bicos)
+e se o G-code extrude algo sobre elas.
+
 Uso:
     python3 -I comparar_gcode_malha.py PROJETO.3mf ARQUIVO.gcode [--passo 4] [--limite 1.0]
+        [--ilhas] [--area-max 2.0]
 """
 import argparse
 import math
@@ -110,6 +115,34 @@ def slice_mesh(a, b, c, zq):
     return np.array(segs)
 
 
+def loops(S):
+    """Liga os segmentos do corte em laços fechados; devolve [(pontos, área)]."""
+    key = lambda p: (round(float(p[0]), 5), round(float(p[1]), 5))  # noqa: E731
+    adj = defaultdict(list)
+    for i, (p, q) in enumerate(S):
+        adj[key(p)].append((i, 1))
+        adj[key(q)].append((i, 0))
+    used, out = set(), []
+    for i in range(len(S)):
+        if i in used:
+            continue
+        pts = [S[i][0], S[i][1]]
+        used.add(i)
+        cur = key(S[i][1])
+        while True:
+            nxt = [(j, e) for j, e in adj[cur] if j not in used]
+            if not nxt:
+                break
+            j, e = nxt[0]
+            used.add(j)
+            pts.append(S[j][e])
+            cur = key(S[j][e])
+        L = np.array(pts)
+        area = 0.5 * abs(np.dot(L[:-1, 0], L[1:, 1]) - np.dot(L[1:, 0], L[:-1, 1]))
+        out.append((L, area))
+    return out
+
+
 def point_to_segments(P, S, chunk=400):
     A, B = S[:, 0], S[:, 1]
     AB = B - A
@@ -138,6 +171,10 @@ def main():
     ap.add_argument('--passo', type=int, default=4, help='analisa 1 a cada N camadas')
     ap.add_argument('--limite', type=float, default=1.0,
                     help='distância (mm) acima da qual o contorno é considerado sem extrusão')
+    ap.add_argument('--ilhas', action='store_true',
+                    help='lista as ilhas pequenas da malha em todas as camadas e se foram impressas')
+    ap.add_argument('--area-max', type=float, default=2.0,
+                    help='área máxima (mm²) de uma ilha pequena')
     args = ap.parse_args()
 
     a, b, c = load_mesh(args.arquivo_3mf)
@@ -173,6 +210,29 @@ def main():
         if n >= 5:
             print(f'  z={zl:6.2f}  trechos={n:3d}  distância máx {dmax:4.2f} mm  '
                   f'região X {lo[0]:.1f}–{hi[0]:.1f}  Y {lo[1]:.1f}–{hi[1]:.1f} (coordenadas do 3MF)')
+
+    if args.ilhas:
+        # ilha "impressa" = metade ou mais do contorno a até 0,6 mm de alguma extrusão
+        total = falta = 0
+        area_falta = 0.0
+        print(f'\nIlhas pequenas (0,01 a {args.area_max} mm²), todas as camadas:')
+        for zl in zs:
+            S = slice_mesh(a, b, c, zl - 0.08)
+            if len(S) == 0:
+                continue
+            Q = np.array(model[zl]) - shift
+            for L, area in loops(S):
+                if not 0.01 < area <= args.area_max:
+                    continue
+                total += 1
+                printed = (nearest(L, Q) <= 0.6).mean() >= 0.5 if len(Q) else False
+                if not printed:
+                    falta += 1
+                    area_falta += area
+                    cx, cy = L[:, 0].mean(), L[:, 1].mean()
+                    print(f'  z={zl:6.2f}  ilha {area:.3f} mm² em ({cx:.1f}, {cy:.1f})  NÃO impressa')
+        print(f'Ilhas pequenas: {total}; não impressas: {falta} '
+              f'(soma das áreas: {area_falta:.2f} mm² × camada)')
 
 
 if __name__ == '__main__':

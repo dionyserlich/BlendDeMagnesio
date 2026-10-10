@@ -24,7 +24,7 @@ Os dois projetos ficam em `variantes/`. Foram gerados a partir do 3MF original p
     - 18,2 mm entre as áreas de suporte.
   - A área de cada cópia, medida no G-code original e já com os suportes, é de 26,8 × 66,8 mm. O conjunto ocupa X 47–209 e Y 93–160, longe das bordas e da zona de detecção de bico enrolado (X ≥ 226, Y ≥ 224).
 - **Aceleração padrão 6000.** Vale para parede interna, preenchimento, sólidos internos, gap fill, ponte e suporte. **Parede externa, saliências e topo continuam em 2000**, e a primeira camada continua em 500. 6000 é o valor dos perfis Standard e Optimal do A1.
-- **Arachne.** Imprime as pontas finas (bico e presas, Z 56–63 mm) que o gerador Clássico descartava. Detalhes entre 0,1 e 0,34 mm saem como linha de 0,34 mm; abaixo de 0,1 mm não são impressos.
+- **Arachne.** Elimina o gap fill em zigue-zague atrás da parede externa (de 459 para 27 mm por peça) e reduz retrações e deslocamentos. **Não recupera as pontas das presas.** A expectativa inicial era essa, mas o fatiamento real mostrou que não (veja "Resultado do fatiamento" abaixo).
 - **`consistent_surface`.** Só age em camadas mais curtas que 8 s. Nessas camadas, o fatiador desacelera primeiro todas as linhas que não são parede externa: paredes internas, preenchimento, suporte, gap fill e também o pouco de superfície de topo que esta peça tem (6 s no total), até no mínimo 20 mm/s. A parede externa só desacelera se isso não bastar. Os últimos 10 mm de cada trecho desacelerado voltam à velocidade normal.
   - Na versão de 4 peças isso quase nunca acontece.
   - Na de 1 peça, mantém a parede externa a 60 mm/s em ~81 % do comprimento (hoje são 37 %).
@@ -54,7 +54,7 @@ Os dois projetos ficam em `variantes/`. Foram gerados a partir do 3MF original p
    - calibração de fluxo dinâmica como você costuma usar.
 6. **Me mande o G-code fatiado** (ou o `.gcode.3mf`) antes de imprimir, se possível. Vou rodar:
    - `analisar_gcode.py`: tempo e velocidade da parede externa por altura;
-   - `comparar_gcode_malha.py`: se as pontas finas voltaram;
+   - `comparar_gcode_malha.py --ilhas`: quais pontas das presas são impressas;
    - `projetar_cenarios.py`.
 
    Com isso confiro se o ganho previsto se confirma e se nada inesperado mudou.
@@ -66,7 +66,7 @@ Imprima uma mesa com as 4 peças e compare com a peça que você já tem, impres
 | Critério | Como avaliar | Aprovado se |
 |---|---|---|
 | Brilho | Uma luz só, a 45°, câmera fixa, peça girada em 4 posições | Sem faixas horizontais, principalmente em 16–28 mm e 44–64 mm. As 4 peças com o mesmo tom. Igual ou melhor que a peça de referência |
-| Detalhes | Lupa nas cabeças, escamas e penas | Pontas do bico e das presas presentes. Escamas nítidas, sem bolhas |
+| Detalhes | Lupa nas cabeças, escamas e penas | Pontas das presas iguais ou melhores que na peça de referência (Clássico). Escamas nítidas, sem bolhas. Se as presas ficarem piores, volte o gerador de paredes para Clássico (Qualidade → Gerador de paredes) |
 | Dimensões | Paquímetro | Altura 64,05 mm, Y 64,2 mm, X 19,0 mm, todos ±0,2 mm, e iguais à peça de referência |
 | Defeitos | Inspeção | Sem fios entre as peças, sem marcas novas de suporte, sem queda nas saliências, sem pé de elefante e sem deslocamento de camada |
 | Tempo | Cronômetro, do início ao fim da mesa | No máximo ~5 % acima de 4h16m, com timelapse desligado |
@@ -74,3 +74,30 @@ Imprima uma mesa com as 4 peças e compare com a peça que você já tem, impres
 Se uma cópia falhar no meio, o A1 permite pular só aquela peça (cancelar objeto). O Bambu Studio marca cada cópia separadamente no G-code quando a mesa tem de 2 a 64 peças (`GCode.cpp`, `get_labeled_id` por instância). Uma peça que caia continua na mesa, então vale acompanhar as primeiras camadas.
 
 **Ponto de atenção da aceleração 6000.** As paredes internas, o preenchimento e o suporte passam a acelerar a mesa (eixo Y) com mais força, e as peças são altas com pouco contato com a placa. Os perfis padrão do A1 usam 6000, mas se alguma peça soltar no teste, volte esse valor para 4000. Fica em Processo → Velocidade → Aceleração → "Normal printing". Isso custa só ~3,7 min por peça.
+
+## Resultado do fatiamento (validação)
+
+### 1 peça: G-code fatiado no Bambu Studio 02.08.02.60
+
+O arquivo está em `fatiados/` e a análise em `analise/`.
+
+- **Configurações aplicadas.** O cabeçalho traz `wall_generator = arachne`, `cooling_slowdown_logic = consistent_surface`, `default_acceleration = 4000` e `different_settings_to_system = enable_support;seam_position;wall_generator;cooling_slowdown_logic;`, como previsto.
+- **Comandos de máquina.** São iguais aos do original: mesmo G-code final e mesmos comandos de controle no corpo. A única diferença no início é a área de nivelamento (`G29`), deslocada 10 mm em X porque a peça está na posição do 3MF.
+- **Brilho: parede externa a 60 mm/s em 360 de 398 camadas.** No original eram 152; as faixas de 16–28 mm e 44–64 mm, antes a 23–47 mm/s, agora ficam a 60. As 36 camadas mais lentas são as de base e de topo, com seção mínima.
+- **Tempo: 1h29m10s, contra 1h27m11s (+2 min).** O `consistent_surface` desacelera mais o preenchimento e as paredes internas para manter a parede externa rápida. É o custo da uniformidade de brilho quando se imprime uma peça só.
+- **Pontas das presas.** O Arachne não as recupera (tabela em `DIAGNOSTICO_E_PLANO.md`, seção 4.5): ele perde 32 de 131 ilhas pequenas; o Clássico perdia 33. A comparação física com a peça de referência decide.
+
+### 4 peças (estimativa do Bambu Studio, pela captura de tela)
+
+| | Tempo da mesa | Por peça |
+|---|---:|---:|
+| Com timelapse (6m33s de preparo + 12m18s de timelapse + 3h43m) | 4h02m | 1h00m30s |
+| **Sem timelapse** (6m33s + 3h43m) | **3h49m30s** | **57m23s** |
+| Original, 1 peça sem timelapse (6m33s + ~1h07m45s) | — | ~1h14m |
+| Original, 1 peça com timelapse (nome do arquivo) | — | 1h27m11s |
+
+- **Ganho por peça:** −23 % contra o original sem timelapse (−17 min por peça) e −34 % contra o 1h27m do nome do arquivo.
+- **Material:** 36,88 g por mesa, 9,22 g por peça (original: 9,44 g).
+- **Divergência com a minha projeção.** O Bambu Studio prevê bem menos do que a projeção feita a partir do G-code de 1 peça: 4h37m por mesa sem timelapse. Não consigo explicar os ~47 min de diferença sem o G-code das 4 peças.
+- **Como mandar o G-code das 4 peças (44 MB).** Comprima em `.zip` antes de enviar; G-code costuma cair para menos de 1/4 do tamanho. Ou exporte o arquivo fatiado da placa (`.gcode.3mf`), que já vem comprimido.
+- **O número que vale** é o tempo real cronometrado da mesa de teste.

@@ -9,3 +9,39 @@ Camadas com contorno sem extrusão a mais de 1.0 mm: 9
   z= 59.40  trechos= 78  distância máx 2.48 mm  região X 120.3–122.3  Y 134.1–134.4 (coordenadas do 3MF)
   z= 59.72  trechos= 92  distância máx 2.79 mm  região X 120.3–122.4  Y 134.0–134.4 (coordenadas do 3MF)
   z= 63.24  trechos=  8  distância máx 4.02 mm  região X 121.1–121.1  Y 129.4–129.6 (coordenadas do 3MF)
+
+Ilhas pequenas (0,01 a 2.0 mm²), todas as camadas:
+  z=  2.92  ilha 0.368 mm² em (120.8, 114.7)  NÃO impressa
+  z=  7.08  ilha 0.013 mm² em (121.1, 107.9)  NÃO impressa
+  z= 10.92  ilha 0.183 mm² em (112.8, 104.2)  NÃO impressa
+  z= 32.20  ilha 0.037 mm² em (110.3, 109.7)  NÃO impressa
+  z= 55.88  ilha 0.173 mm² em (119.8, 128.6)  NÃO impressa
+  z= 56.04  ilha 0.048 mm² em (120.9, 133.6)  NÃO impressa
+  z= 56.20  ilha 0.137 mm² em (120.3, 134.1)  NÃO impressa
+  z= 56.20  ilha 0.115 mm² em (121.6, 134.1)  NÃO impressa
+  z= 56.36  ilha 0.111 mm² em (119.9, 135.8)  NÃO impressa
+  z= 56.36  ilha 0.099 mm² em (120.3, 134.1)  NÃO impressa
+  z= 56.36  ilha 0.081 mm² em (121.6, 134.1)  NÃO impressa
+  z= 56.52  ilha 0.076 mm² em (119.9, 135.9)  NÃO impressa
+  z= 56.52  ilha 0.061 mm² em (120.3, 134.2)  NÃO impressa
+  z= 56.52  ilha 0.049 mm² em (121.6, 134.1)  NÃO impressa
+  z= 56.68  ilha 0.042 mm² em (119.9, 135.9)  NÃO impressa
+  z= 56.68  ilha 0.012 mm² em (120.3, 134.2)  NÃO impressa
+  z= 58.28  ilha 0.047 mm² em (118.2, 119.1)  NÃO impressa
+  z= 58.76  ilha 0.012 mm² em (122.1, 134.4)  NÃO impressa
+  z= 58.92  ilha 0.034 mm² em (120.5, 134.3)  NÃO impressa
+  z= 58.92  ilha 0.041 mm² em (122.2, 134.4)  NÃO impressa
+  z= 59.08  ilha 0.056 mm² em (120.5, 134.3)  NÃO impressa
+  z= 59.08  ilha 0.062 mm² em (122.2, 134.3)  NÃO impressa
+  z= 59.24  ilha 0.073 mm² em (120.5, 134.3)  NÃO impressa
+  z= 59.24  ilha 0.078 mm² em (122.2, 134.3)  NÃO impressa
+  z= 59.40  ilha 0.089 mm² em (120.5, 134.3)  NÃO impressa
+  z= 59.40  ilha 0.095 mm² em (122.2, 134.3)  NÃO impressa
+  z= 59.56  ilha 0.103 mm² em (120.5, 134.2)  NÃO impressa
+  z= 59.56  ilha 0.113 mm² em (122.2, 134.2)  NÃO impressa
+  z= 59.72  ilha 0.115 mm² em (120.5, 134.2)  NÃO impressa
+  z= 59.72  ilha 0.132 mm² em (122.2, 134.2)  NÃO impressa
+  z= 59.88  ilha 0.128 mm² em (120.5, 134.1)  NÃO impressa
+  z= 63.08  ilha 0.423 mm² em (121.0, 129.2)  NÃO impressa
+  z= 63.08  ilha 0.194 mm² em (121.9, 138.4)  NÃO impressa
+Ilhas pequenas: 131; não impressas: 33 (soma das áreas: 3.40 mm² × camada)

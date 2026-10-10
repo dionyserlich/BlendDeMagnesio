@@ -1,0 +1,48 @@
+Arquivo: fatiados/Jogos_Vorazes_1peca_arachne_PLA_1h29m.gcode
+Bambu Studio — tempo do modelo / total: 1h 22m 36s / 1h 29m 10s
+Script — impressão (camadas, sem blocos condicionais): 1h10m22s
+Script — blocos condicionais (timelapse/detecção):     0h12m41s
+Script — G-code de início/fim (sem esperas de aquecimento): 0h02m07s
+Script — impressão sem a desaceleração de resfriamento:     1h07m49s  (resfriamento acrescenta 0h02m34s)
+
+Tipo de linha                          tempo  % imp. s/ desac.       mm     mm³
+Outer wall                          0h16m27s    23.4  0h16m20s    29793    1804
+Inner wall                          0h14m20s    20.4  0h13m25s    27250    1780
+Sparse infill                       0h11m49s    16.8  0h10m35s    25523    1664
+Deslocamento                        0h07m44s    11.0  0h07m44s        0       0
+Support                             0h05m27s     7.7  0h05m15s    17698    1113
+Floating vertical shell             0h04m15s     6.0  0h04m15s    10505     697
+Z (troca de camada/z-hop)           0h03m02s     4.3  0h03m02s        0       0
+Wipe (limpeza do bico)              0h02m50s     4.0  0h02m50s        0       0
+Internal solid infill               0h02m32s     3.6  0h02m27s     4879     309
+Retração/desretração                0h01m20s     1.9  0h01m20s        0       0
+Overhang wall                       0h00m20s     0.5  0h00m20s      213      13
+Bridge                              0h00m08s     0.2  0h00m08s      279      29
+Support interface                   0h00m05s     0.1  0h00m05s      134       8
+Top surface                         0h00m02s     0.1  0h00m02s       76       5
+Gap infill                          0h00m01s     0.0  0h00m01s       27       1
+Transição                           0h00m00s     0.0  0h00m00s        3       0
+
+Camadas: 400. Desaceleradas pelo tempo mínimo de camada: 103 (paredes internas/preenchimento > 5% mais lentos); 71 com a parede externa abaixo de 60 mm/s.
+
+Velocidade predominante da parede externa por faixa de altura (mm/s):
+   0– 4 mm: mín  10  mediana  30  máx  60
+   4– 8 mm: mín  60  mediana  60  máx  60
+   8–12 mm: mín  60  mediana  60  máx  60
+  12–16 mm: mín  60  mediana  60  máx  60
+  16–20 mm: mín  60  mediana  60  máx  60
+  20–24 mm: mín  60  mediana  60  máx  60
+  24–28 mm: mín  60  mediana  60  máx  60
+  28–32 mm: mín  60  mediana  60  máx  60
+  32–36 mm: mín  60  mediana  60  máx  60
+  36–40 mm: mín  60  mediana  60  máx  60
+  40–44 mm: mín  60  mediana  60  máx  60
+  44–48 mm: mín  20  mediana  60  máx  60
+  48–52 mm: mín  20  mediana  60  máx  60
+  52–56 mm: mín  20  mediana  60  máx  60
+  56–60 mm: mín  60  mediana  60  máx  60
+  60–64 mm: mín  20  mediana  60  máx  60
+  64–68 mm: mín  20  mediana  20  máx  20
+
+Deslocamentos: {'quantidade': 7595, 'distancia_total_mm': 102306, 'mediana_mm': 4.38, 'p90_mm': 30.15, 'acima_de_20mm': 1159}
+Contagens: {'retracoes': 3215, 'arcos': 56619, 'comandos_ventoinha': 5017, 'deslocamentos': 7595, 'movimentos_z': 3210, 'zhop_espiral': 1750}
