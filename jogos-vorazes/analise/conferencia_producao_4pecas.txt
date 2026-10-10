@@ -1,0 +1,45 @@
+Arquivos:
+  ALTERADO   3D/3dmodel.model
+  idêntico   3D/Objects/object_2.model
+  idêntico   3D/_rels/3dmodel.model.rels
+  idêntico   Metadata/cut_information.xml
+  idêntico   Metadata/filament_sequence.json
+  ALTERADO   Metadata/model_settings.config
+  idêntico   Metadata/pick_1.png
+  idêntico   Metadata/plate_1.json
+  idêntico   Metadata/plate_1.png
+  idêntico   Metadata/plate_1_small.png
+  idêntico   Metadata/plate_no_light_1.png
+  ALTERADO   Metadata/project_settings.config
+  idêntico   Metadata/slice_info.config
+  idêntico   Metadata/top_1.png
+  idêntico   [Content_Types].xml
+  idêntico   _rels/.rels
+
+Configurações alteradas:
+  cooling_slowdown_logic: ["uniform_cooling"] -> ["consistent_surface"]
+  default_acceleration: ["4000"] -> ["6000"]
+  different_settings_to_system: ["enable_support;seam_position", "", ""] -> ["default_acceleration;enable_support;seam_position;wall_generator", "cooling_slowdown_logic", ""]
+  wall_generator: "classic" -> "arachne"
+
+Itens de montagem (<build>): 4
+  objeto 2  UUID 00000002-b1ec-4553-aec9-835e5b724bb4  translação [64.0, 128.0, 32.0264893]
+  objeto 2  UUID 00000002-b1ec-4553-aec9-835e5b724bb4  translação [109.0, 128.0, 32.0264893]
+  objeto 2  UUID 00000002-b1ec-4553-aec9-835e5b724bb4  translação [154.0, 128.0, 32.0264893]
+  objeto 2  UUID 00000002-b1ec-4553-aec9-835e5b724bb4  translação [199.0, 128.0, 32.0264893]
+Placa 1: 4 instâncias [{'object_id': '2', 'instance_id': '0', 'identify_id': '118'}, {'object_id': '2', 'instance_id': '1', 'identify_id': '119'}, {'object_id': '2', 'instance_id': '2', 'identify_id': '120'}, {'object_id': '2', 'instance_id': '3', 'identify_id': '121'}]
+Itens de <assemble>: 2
+
+Caixa de cada instância na mesa (malha + suportes):
+  0: X 47.1–73.9  Y 93.3–160.1
+  1: X 92.1–118.9  Y 93.3–160.1
+  2: X 137.1–163.9  Y 93.3–160.1
+  3: X 182.1–208.9  Y 93.3–160.1
+  folga 0–1: 18.2 mm entre suportes, 26.0 mm entre malhas
+  folga 0–2: 63.2 mm entre suportes, 71.0 mm entre malhas
+  folga 0–3: 108.2 mm entre suportes, 116.0 mm entre malhas
+  folga 1–2: 18.2 mm entre suportes, 26.0 mm entre malhas
+  folga 1–3: 63.2 mm entre suportes, 71.0 mm entre malhas
+  folga 2–3: 18.2 mm entre suportes, 26.0 mm entre malhas
+
+Resultado: OK

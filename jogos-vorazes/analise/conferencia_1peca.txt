@@ -1,0 +1,32 @@
+Arquivos:
+  idêntico   3D/3dmodel.model
+  idêntico   3D/Objects/object_2.model
+  idêntico   3D/_rels/3dmodel.model.rels
+  idêntico   Metadata/cut_information.xml
+  idêntico   Metadata/filament_sequence.json
+  idêntico   Metadata/model_settings.config
+  idêntico   Metadata/pick_1.png
+  idêntico   Metadata/plate_1.json
+  idêntico   Metadata/plate_1.png
+  idêntico   Metadata/plate_1_small.png
+  idêntico   Metadata/plate_no_light_1.png
+  ALTERADO   Metadata/project_settings.config
+  idêntico   Metadata/slice_info.config
+  idêntico   Metadata/top_1.png
+  idêntico   [Content_Types].xml
+  idêntico   _rels/.rels
+
+Configurações alteradas:
+  cooling_slowdown_logic: ["uniform_cooling"] -> ["consistent_surface"]
+  different_settings_to_system: ["enable_support;seam_position", "", ""] -> ["enable_support;seam_position;wall_generator", "cooling_slowdown_logic", ""]
+  wall_generator: "classic" -> "arachne"
+
+Itens de montagem (<build>): 1
+  objeto 2  UUID 00000002-b1ec-4553-aec9-835e5b724bb4  translação [118.0, 128.0, 32.0264893]
+Placa 1: 1 instâncias [{'object_id': '2', 'instance_id': '0', 'identify_id': '118'}]
+Itens de <assemble>: 2
+
+Caixa de cada instância na mesa (malha + suportes):
+  0: X 101.1–127.9  Y 93.3–160.1
+
+Resultado: OK
