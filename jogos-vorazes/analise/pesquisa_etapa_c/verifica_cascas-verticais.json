@@ -1,0 +1,97 @@
+{
+ "verdicts": [
+  {
+   "claim_index": 0,
+   "status": "confirmed",
+   "note": "libslic3r_PrintObject.cpp:1944-1947 and :1975-1978 skip combine_holes only when the mode is evtPartial; combine_shells(top/bottom) runs in both modes. Holes start as the layer's own fill_expolygons (:1870). fill_expolygons = to_expolygons(fill_surfaces) (libslic3r_Layer.cpp:256), so in partial diff(polygonsInternal, holes) at :2003 is about empty. I re-downloaded PrintObject.cpp from the tag and its md5 is identical to the local copy."
+  },
+  {
+   "claim_index": 1,
+   "status": "confirmed",
+   "note": "Top loop :1940: i<idx+6 OR print_z diff <1.0-EPS. That gives idx+1..idx+5, plus idx+6 (0.96<1.0). Bottom loop :1971 with thickness 0 gives idx-1..idx-3. Config confirmed at G-code:534-535 and :39-40. Working it through: an upward-slope enabled ribbon covers [0.756, 0.756+6s] from the boundary, and an overhang ribbon is 3s wide."
+  },
+  {
+   "claim_index": 2,
+   "status": "confirmed",
+   "note": "Code constants at :2021-2034 and :2056-2057. With an internal solid width of 0.42 (G-code:277), spacing x1.05 = 0.405 mm. That gives opening radius 0.132 (strips <0.263 removed), net growth +0.081, and area limits 0.61 / 3.24 mm². The second filter condition (piece must not fully cover an internal polygon, :2059-2061) is not mentioned. The part about 'removes most fragmented strips for this part' is a simulation inference, not code."
+  },
+  {
+   "claim_index": 3,
+   "status": "confirmed",
+   "note": "Disabled branch: :1839-1841. In discover_horizontal_shells, the evtDisabled path ends with goto EXTERNAL (:3499-3505), and the margin is 3x solid width (:3531)."
+  },
+  {
+   "claim_index": 4,
+   "status": "confirmed",
+   "note": "Fill.cpp:19 sets NARROW_INFILL_AREA_THRESHOLD 3, and :163-170 defines narrow as 'offset -3 mm is empty'. At :463 and :489-506, a narrow piece that touches the lower layer's stInternal/stInternalVoid gets ipFloatingConcentric / erFloatingVerticalShell. detect_floating_vertical_shell only acts inside FillFloatingConcentric.cpp:691-702. G-code:77-78 shows both set to 1."
+  },
+  {
+   "claim_index": 5,
+   "status": "confirmed",
+   "note": "GCode.cpp:7243-7250 matches the claim, and its md5 matches the tag. My own scan finds 33,407 segments (arcs counted as one), median 0.219 mm, 84.1% of length in segments <1 mm, 697 mm³. Speeds are mostly 70-140 mm/s, and only 0.023 m is at ≤50 mm/s. Widths are 0.27-0.84 (mean 0.46), a bit wider than the stated 0.35-0.61; this does not matter for the conclusion. Sparse infill median segment is 1.15 mm."
+  },
+  {
+   "claim_index": 6,
+   "status": "confirmed",
+   "note": "My independent band scan reproduces every value. FVS (m): 0.14/1.34/2.05/0.96/0.26/0.00/0.06/0.34/0.82/1.07/1.50/1.02/0.49/0.01/0.23/0.22. Internal solid infill (ISI) values also match. Totals (analisar_gcode.py): FVS 4m15s, 10505 mm, 697 mm³; ISI 2m32s, 4879 mm, 309 mm³. FVS appears at Z 19.56, then not again until 26.44. Line 16367 is Z 2.6, 126107 is Z 15.88, 213988 is Z 30.6."
+  },
+  {
+   "claim_index": 7,
+   "status": "confirmed",
+   "note": "In evst_arachne_ft.json, slowed layers in bands 4-16 and 32-48 = 0, 16-28 = 47, 52-64 = 18. The count is wrong: those bands hold 175 layers, not 125. Headroom: minimum nominal layer time is 9.7 s at Z 4-8 and 11+ s elsewhere. Removing about 1-1.8 s/layer keeps them above 8 s, though Z 4-8 gets close. This rests on the user's planner, not Bambu's CoolingBuffer. It is irrelevant for 4-up."
+  },
+  {
+   "claim_index": 8,
+   "status": "confirmed",
+   "note": "My scan gives 2562 FVS extrusion starts preceded by travel, 153 of them with a retraction, over 31.7 m of travel. The 125 s figure comes from the user's planner, so I rate it medium confidence. This planner overestimated the 4-up plate by about 47 min against Bambu Studio (ETAPA_B.md:101)."
+  },
+  {
+   "claim_index": 9,
+   "status": "confirmed",
+   "note": "evst_sim2.json band totals: enabled 1123.9 mm³ against G-code FVS+ISI+Bridge 1035.5. Bands match within about 10-15% (8-12: 160.6 vs 142.9; 40-44: 111.8 vs 100.9; 52-56: 42.3 vs 43.5). This validates only the enabled branch. The partial branch relies on things the simulation simplifies: stTop has no opening (ext_w/10) and no +0.019 mm expansion (PrintObject.cpp:1509,1530,1767), and the second clause of the area filter is omitted."
+  },
+  {
+   "claim_index": 10,
+   "status": "uncertain",
+   "note": "The simulation output is reported correctly (partial 282.8, partial_nf 330.5). My independent face-slope estimate of the same code geometry also gives about 74% removal overall. It differs by band, though: it keeps about 20-25% of the solid at Z 40-48 and 25-45% at Z 8-16 (40-48° faces keep a ribbon of 7s-0.756 up to about 0.58 mm). So 'Z 12-48 drops to ~0' is not assured. Removal could be roughly 550-775 mm³."
+  },
+  {
+   "claim_index": 11,
+   "status": "confirmed",
+   "note": "My mesh histogram reproduces the face areas exactly: UP 40-75° = 1653.2 mm² of 6066; Z 32-48 676.6; Z 8-24 408.3; Z 48-56 168.5; UP <12° 33.1 mm². It also finds 370 mm² of 12-40° upward faces and 176 mm² of 40-75° faces at Z 56-65, which the claim leaves out. The 'quarter behind overhangs' share is a simulation result."
+  },
+  {
+   "claim_index": 12,
+   "status": "confirmed",
+   "note": "The geometry checks out: infill boundary 0.756 mm = wall 0.819 - 15% x 0.416 overlap (PerimeterGenerator.cpp:1465-1471); enabled ribbon 6s; partial strip [0.756, 7s] needs 7s > 1.02, i.e. α < 47.7°. One caveat: for slopes steeper than about 21° (s < 0.42), the visible exterior is the outer wall in both modes. The ribbon only backs the inner walls of the layers above, so a lower perpendicular thickness is not by itself a show-through mechanism."
+  },
+  {
+   "claim_index": 13,
+   "status": "confirmed",
+   "note": "combine_shells(cache.top_surfaces) at :1947 runs in both modes, so the 6-layer top projection is kept. The G-code has 0.08 m of Top surface. Near-flat upward faces total 33.1 mm²."
+  },
+  {
+   "claim_index": 14,
+   "status": "uncertain",
+   "note": "The direction (shorter) is certain, but the size depends on the simulation. Applying my band-wise analytic keep-ratios to the measured FVS time per band gives about 195 s of FVS plus about 20 s of ISI removed, minus about 45 s of added sparse infill. That is about -2.8 min from extrusion, or about -4.4 min with the travel overhead, against the claimed -3.6 / -6.0. A range of -3 to -6 min is plausible. All of it is planner-based, and this planner overestimated the 4-up plate against Bambu Studio."
+  },
+  {
+   "claim_index": 15,
+   "status": "confirmed",
+   "note": "There is no FVS/ISI FEATURE block between Z 19.56 and 26.44 (awk), while sparse infill there is 1.79 m (Z 20-24). Mid-height faces are mostly 75-90°. This makes the existing reference pieces at Z 20-28 a valid walls-plus-gyroid control."
+  },
+  {
+   "claim_index": 16,
+   "status": "confirmed",
+   "note": "GCodeProcessor.cpp:6111-6113 maps erFloatingVerticalShell to erSolidInfill. Its md5 matches the tag download."
+  }
+ ],
+ "recommendation_problems": [
+  "The percentage uses an outdated denominator. Bambu Studio estimates 57m23s per piece for 4-up without timelapse and 1h00m30s with it (ETAPA_B.md:93-94), not 1h04-1h08. So -3.5 to -6 min is about 6-10%. The savings also come from analisar_gcode's planner, which overestimated the 4-up plate by about 47 min against Bambu Studio (ETAPA_B.md:101). Treat the size of the saving as soft.",
+  "The edit recipe starts from the original 3MF plus '...'. That file has wall_generator=classic and default_acceleration=4000, so a test built that way would not match production. Build the test from variantes/Jogos_Vorazes_producao_4pecas.3mf and change only ensure_vertical_shell_thickness. That file already has arachne, 6000, consistent_surface and the 4 instances.",
+  "The slicing checks are too tight. 'Z 12-48 ≈ 0 FVS' and '250-330 mm³ remaining' assume the simulation's partial branch is exact. That branch omits the stTop opening and expansion (PrintObject.cpp:1509,1530,1767) and the second clause of the area filter (:2059-2061). An analytic estimate keeps narrow ribbons on 40-48° faces at Z 8-16 and 40-48. Use a looser threshold, for example up to about 450 mm³ remaining.",
+  "The risk framing overstates the mechanism. Above about 21° slope, the outside surface is the outer wall in both modes. The removed ribbon only backs the inner wall of the next layers, which then overhangs gyroid by s (at most 0.19 mm). That inner wall also has gyroid touching it in the same layer, as on the near-vertical Z 20-28 band. This supports 'medium-low', but the visual check is still required.",
+  "Minor: the minimum-layer-time claim counts 125 layers where the bands hold 175. At Z 4-8 the single-piece layers (minimum about 9.7 s nominal) end up close to 8 s after removal. This does not affect 4-up production."
+ ],
+ "corrected_recommendation": "Test partial in a separate Etapa C test variant and keep production on enabled until a test plate passes inspection. The code supports partial: at v02.08.02.60, partial only skips the neighbour-layer infill intersection (PrintObject.cpp:1944-1947 and :1975-1978). It keeps the 6+1-layer top projection, the 3-layer bottom projection and the small solid areas from minimum_sparse_infill_area. The thing removed is the narrow solid strip behind the walls on slopes (printed as 'Floating vertical shell'). Those strips are slow: 33k segments with a median of 0.22 mm, plus 2562 travels.\n\nHow to build the test: python3 -I ferramentas/gerar_variante_3mf.py variantes/Jogos_Vorazes_producao_4pecas.3mf variantes/Jogos_Vorazes_producao_4pecas_evst_partial.3mf --processo ensure_vertical_shell_thickness=partial. The result has \"ensure_vertical_shell_thickness\": \"partial\" and different_settings_to_system[0] = \"default_acceleration;enable_support;ensure_vertical_shell_thickness;seam_position;wall_generator\". Change nothing else. Keep sparse infill at 15% gyroid and infill_combination=0 for this first test, so that any change in the surface can be traced to this setting.\n\nExpected result: about -3 to -6 min per piece, central about -4 min, or about 5-10% of the ~57-60 min per piece Bambu Studio estimates for 4-up.\n\nAfter slicing, check:\n- the config block reads \"; ensure_vertical_shell_thickness = partial\";\n- FVS + ISI + Bridge volume falls from 1035 mm³ to roughly 250-450 mm³ (if it stays above about 500, the gain is small);\n- FVS in Z 12-48 drops to under about 25% of today's 7.1 m, without needing to be zero;\n- Z 0-4 internal solid infill (about 1.0 m) and Z 48-64 internal solid infill (0.5-0.8 m per band) stay.\n\nPrint-check under raking light, against the reference piece:\n- ring shoulders and bird body, Z 32-52;\n- inside of the hole, Z 8-24;\n- head tops, Z 56-64.\n\nUse the existing walls-plus-gyroid band at Z 20-28 as the control. If gyroid shows through or the shine changes, go back to enabled. Do not add a third wall to compensate."
+}

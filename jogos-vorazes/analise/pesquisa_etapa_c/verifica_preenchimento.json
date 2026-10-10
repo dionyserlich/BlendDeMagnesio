@@ -1,0 +1,93 @@
+{
+ "verdicts": [
+  {
+   "claim_index": 0,
+   "status": "confirmed",
+   "note": "I checked the source against the tag (my downloads of PrintObject.cpp, Fill.cpp and the others are byte-identical to the researcher's copies). PrintObject.cpp:3655-3660 intersects only filter_by_type(stInternal), and :3690-3708 removes and re-adds only stInternal (the remainder becomes stInternalVoid). PrintObject.cpp:1239 lists infill_combination under posPrepareInfill only. PrintConfig_tag.cpp:3763-3764: \"Wall is still printed with original layer height.\""
+  },
+  {
+   "claim_index": 1,
+   "status": "confirmed",
+   "note": "PrintObject.cpp:3614 FIXME on max_layer_height; :3627-3628 skips layer id 0; :3632 \"if (current_height + layer->height >= nozzle_diameter + EPSILON)\". With 0.16 layers, 0.32 < 0.4001 and 0.48 >= 0.4001, so the pairs are (1,2),(3,4)... printed on the upper layer (:3697-3701). The option infill_combination_max_layer_height is absent from the tag's PrintConfig.cpp and PrintConfig.hpp (0 grep hits in fresh downloads). The G-code has \"; max_layer_height = 0.28\" at :326."
+  },
+  {
+   "claim_index": 2,
+   "status": "confirmed",
+   "note": "Fill.cpp:264 builds the flow with surface.thickness (0.32). Fill.cpp:293-295 computes spacing from object layer_height, so the XY pattern is unchanged. FillBase.cpp:137-160 keeps params.flow.mm3_per_mm() and height for internal flow. Flow.cpp:219 gives 0.1220 mm3/mm. GCode.cpp:7351-7355 caps speed at 7.5/0.1220 = 61.5 mm/s. filament_adaptive_volumetric_speed = 0 (G-code :126), so no fitted cap applies. Today's feed is \"G1 F6766.287\" (G-code :6751) = 7.5/0.06651 x 60."
+  },
+  {
+   "claim_index": 3,
+   "status": "confirmed",
+   "note": "Arithmetic checked: 0.12202/0.06651 = 1.835. My own parse gives sparse infill 25523 mm and 1663 mm3. The ~8% volume cut applies to the combinable ~93% of that."
+  },
+  {
+   "claim_index": 4,
+   "status": "confirmed",
+   "note": "The pattern-specific branches (Fill.cpp:213-222) and the ipLockedZag block (:307-329) do not touch gyroid. Fill.cpp:622 sets f->z = print_z. FillGyroid.cpp:157 uses this->angle and ignores thickness_layers. Minor wording fix: the clearance is 0.5 x perimeter width + 0.5 x solid width (PrintObject.cpp:3678-3687), not just 0.5 x solid width."
+  },
+  {
+   "claim_index": 5,
+   "status": "confirmed",
+   "note": "LayerRegion.cpp:676-681 and :599-612 apply the 15 mm2 rule before combine_infill. combine only drops intersection pieces of area <= ss*ss (LayerRegion.cpp:690-694, PrintObject.cpp:3663-3667). Neither combined islands nor single-height leftovers are re-checked against 15 mm2."
+  },
+  {
+   "claim_index": 6,
+   "status": "confirmed",
+   "note": "Order confirmed: PrintObject.cpp:663 discover_vertical_shells, :736 bridge_over_infill, :740 combine_infill. FillFloatingConcentric.cpp:702 detects floating lines from floating_areas only, and sparse_polys feed only get_best_loop_start / get_loop_start_candidates (:705-716). Small nuance the claim misses: the upper layer of a pair gets no stInternalVoid, and the clearance ring around the intersection is removed from its stInternal (PrintObject.cpp:3692-3701). For the layer above, the union in Fill.cpp:655-663 is therefore slightly smaller near non-combined regions. The effect is negligible and internal."
+  },
+  {
+   "claim_index": 7,
+   "status": "confirmed",
+   "note": "grep over every downloaded tag source finds it only in PrintConfig, Preset, PrintConfig.hpp and a commented-out line in Tab.cpp:3339. GitHub code search on the default branch finds only Preset.cpp, PrintConfig.hpp and profile JSONs. That search does not index files over 384 KB (GCode.cpp, PrintConfig.cpp), but both were grepped locally with no use found."
+  },
+  {
+   "claim_index": 8,
+   "status": "refuted",
+   "note": "The mechanism is wrong at this tag: the Fill.cpp:386-459 extension is dead code. group_fills never creates a SurfaceFill for stInternalVoid: Fill.cpp:200-203 only sets has_internal_voids, and :346-347 skips void surfaces. So `voids` at :406 is always empty and the `if (!voids.empty() ...)` block never runs. Combination therefore adds no extra solid infill pieces. Narrow leftovers stay sparse, or are dropped when shorter than 0.8 x spacing (FillGyroid.cpp:190). The 13 mm and 7.2% figures are proximity heuristics (pair_solid.py uses distance < 0.45 mm to partner-layer solid lines). They are plausible but unverified."
+  },
+  {
+   "claim_index": 9,
+   "status": "confirmed",
+   "note": "Reproduced. My independent parse: only 5.0% of sparse length is at 112.8 mm/s, and 7.7% is at 20 mm/s. feeds_check.py: after the analyzer's correction only 5349 of 25523 mm are nominal. The single-piece file uses consistent_surface (G-code :61). CoolingBuffer.cpp (tag, :321-331) slows infill and internal walls first (phase 1), to speeds below v*, which analisar_gcode.py:415-458 (written for uniform_cooling) does not undo. The analyzer itself prints sparse 0h10m35s 'sem desac.' while nominal at acc 4000 is 452 s. The original file is uniform_cooling (its :61)."
+  },
+  {
+   "claim_index": 10,
+   "status": "confirmed",
+   "note": "My parse reproduces 19624 moves, arcs 0.740, p50 1.152, p90 2.432, 82.0% < 2 mm. One wording fix: the '95% never reach cruise' metric is actually 'time > 1.05 x cruise time' (sparse_analysis.py), which is not the same as never reaching cruise."
+  },
+  {
+   "claim_index": 11,
+   "status": "uncertain",
+   "note": "The stored JSON matches (462.3 -> 280.0 s; original 468.6 -> 280.1 s). But it is an upper-bound simulation on the analyzer's planner. ETAPA_B.md:101 records that the same projection approach overestimated the 4-piece plate by ~47 min (4h37m vs Bambu's 3h43m). The absolute seconds, and how much of the saving is acceleration overhead, may therefore be smaller in Bambu's estimate and in a real print. The travel bookkeeping (the travel to the sparse start is kept and the exit travel removed) roughly cancels."
+  },
+  {
+   "claim_index": 12,
+   "status": "confirmed",
+   "note": "FillGyroid.cpp:164-166 with DensityAdjust 2.44 (FillGyroid.hpp:25) and spacing 0.4157 gives a line pitch of pi x distance = 3.57 / 4.46 / 5.35 mm. Crossing length ∝ density is consistent with the code. The constant wall-following share follows from connect_infill with anchor_max 20 mm (G-code :469-470). The -15% / -22% totals are synthetic estimates, not sliced."
+  },
+  {
+   "claim_index": 13,
+   "status": "confirmed",
+   "note": "Every sparse_infill_density use in PrintObject, LayerRegion, Layer, PerimeterGenerator, Fill and GCode is a 0 / 100 / <100 / >0 / >95 (ironing only) test. The exception is Layer.cpp:588 (get_sparse_infill_max_void_area), which has no callers. PrintObject.cpp:1281-1290 re-runs perimeters only for transitions through 0 or 100%."
+  },
+  {
+   "claim_index": 14,
+   "status": "confirmed",
+   "note": "The mechanism is confirmed by CoolingBuffer.cpp:321-331: phase 2 slows outer and first-internal walls only if phase 1 (infill and internal walls) is not enough. The layer-time numbers (p1 3.68 s per piece x 4 > 8 s) come from the planner model. This also means the single-piece 12%-only change cuts phase-1 capacity, not just combination."
+  },
+  {
+   "claim_index": 15,
+   "status": "confirmed",
+   "note": "Plater.cpp (byte-identical to the tag) at :14582-14590 and :15184-15198 shows a Helio-only warning. ConfigManipulation.cpp:874 only toggles visibility. Nothing in Print validation references the option."
+  }
+ ],
+ "recommendation_problems": [
+  "what_to_check says '; LAYER_HEIGHT:' stays 0.16 on every layer. That is wrong. GCode.cpp:7198 and :7410-7413 emit the height tag per path (effective_height = path.height), and the current file already shows '; LAYER_HEIGHT: 0.4' for thick bridges (G-code :368644). Combined sparse blocks will therefore carry '; LAYER_HEIGHT: 0.32', and the next feature goes back to 0.16. Use this tag as the positive check.",
+  "Visual risk 5, claim 8 and the check 'a new or larger Internal solid infill next to removed infill = extra solid pieces' rest on dead code. Fill.cpp:406-459 never runs because voids are never SurfaceFills (Fill.cpp:200-203, 346-347). No extra solid pieces should appear. Internal solid infill (4.9 m / 309 mm3) should be unchanged, and any growth signals something else.",
+  "The time figures are planner projections, not Bambu estimates. ETAPA_B.md:101 shows the same approach over-projected the 4-piece plate by ~47 min (4h37m vs Bambu's 3h43m). 'The Bambu estimate should drop by about 13–15 min against the Etapa B projection' mixes baselines. Compare against Bambu's own Etapa B estimate (3h43m print, 3h49m30s without timelapse, ETAPA_B.md:94-95), and expect a possibly smaller drop (~10–15 min).",
+  "The plan proposes evaluating the third Etapa C candidate (ensure_vertical_shell_thickness = partial) 'together on the same test print'. If gloss or show-through defects appear, they could not be attributed to one change. The 4 pieces are instances of one object (ETAPA_B.md:39), so they cannot differ in settings on the same plate. Test combination + 12% on its own plate first.",
+  "Single-piece variant: 12% alone also shrinks the infill time that consistent_surface slows first (CoolingBuffer.cpp:321-331), so outer-wall slowdowns can increase there too. The ≤71-layer outer-wall check should be applied to the 12%-only single-piece slice as well, not only to combination.",
+  "The ~27% of sparse length that runs along the inner wall (anchors and connections up to sparse_infill_anchor_max = 20 mm) becomes a 0.32 mm bead lying along the inner wall on every other layer. This is the most likely path for show-through on the 2-wall silk shell, and the physical inspection should target it explicitly (z 24–48 mm)."
+ ],
+ "corrected_recommendation": "Production only. Edit variantes/Jogos_Vorazes_producao_4pecas.3mf, Metadata/project_settings.config, through the variant generator:\n\n\"infill_combination\": \"1\"\n\"sparse_infill_density\": \"12%\"\n\nUpdate the first entry of different_settings_to_system to:\n\"default_acceleration;enable_support;infill_combination;seam_position;sparse_infill_density;wall_generator\"\n\nThe current entry is 'default_acceleration;enable_support;seam_position;wall_generator', and model_settings.config has no per-object overrides. Keep \"sparse_infill_pattern\": \"gyroid\" and everything else unchanged. Choose 12%, not 10%: with combination on, 10% gains only about 15–20 s more per piece, and it widens the gyroid pitch to 5.35 mm with no internal_bridge_support_thickness mitigation, since that option does nothing at this tag.\n\n**Do not bundle with the third candidate.** Do not combine this with ensure_vertical_shell_thickness = partial in the first test plate. The 4 copies are instances and cannot be A/B'd on one plate.\n\n**Checks after slicing:**\n- CONFIG_BLOCK shows \"infill_combination = 1\" and \"sparse_infill_density = 12%\". gyroid and arachne are unchanged.\n- Combined sparse blocks appear on every second layer (Z 0.52, 0.84, ...) with \"; LAYER_HEIGHT: 0.32\", about F3688, and E/mm about 0.0497. Walls keep LAYER_HEIGHT 0.16.\n- The other layers keep only short single-height leftovers. Sparse infill length should be about 11–12 m per piece and volume about 1200–1250 mm3.\n- Internal solid infill, Floating vertical shell, walls, Bridge and Top surface stay within about 1–2%. No extra solid pieces are expected.\n- Compare Bambu's time estimate with the Etapa B Bambu estimate (3h43m print / 3h49m30s without timelapse). Expect roughly −10 to −15 min per plate (planner projection about −13 to −15 min, which may be optimistic).\n\n**Physical checks:**\n- One light at 45°, part turned to 4 positions. Look for an every-other-layer texture or infill show-through, especially at z 24–48 mm where infill runs along the inner wall.\n- Loupe on the top surfaces and the slopes at z 56–64 for pinholes.\n- Press-stiffness test against the reference part.\n- Weigh the pieces: expect about −0.5 g per piece.\n\n**Single-piece variant.** Apply 12% (and combination, if wanted) only after slicing shows no more than 71 layers with the outer wall below 60 mm/s. This applies to 12% alone too, because consistent_surface slows infill first."
+}

@@ -4,9 +4,11 @@ Otimização do tempo de impressão para Bambu Lab A1 com PLA Silk dourado Maste
 
 - `DIAGNOSTICO_E_PLANO.md`: diagnóstico (Fase 1) e plano priorizado. **Comece por aqui.**
 - `ETAPA_B.md`: os dois projetos prontos para fatiar, como fatiar e enviar, e os critérios do teste de impressão.
+- `ETAPA_C.md`: testes de preenchimento combinado (C1) e paredes verticais em "parcial" (C2).
 - `variantes/`: projetos gerados a partir do original, com `SHA256SUMS`.
-  - `Jogos_Vorazes_producao_4pecas.3mf`: 4 cópias por mesa.
+  - `Jogos_Vorazes_producao_4pecas.3mf`: 4 cópias por mesa (produção aprovada na Etapa B).
   - `Jogos_Vorazes_1peca.3mf`: para pedidos de uma peça.
+  - `Jogos_Vorazes_producao_4pecas_C1_preenchimento.3mf`, `..._C2_paredes_verticais.3mf`: testes da Etapa C.
 - `original/`: projeto 3MF e G-code originais, só para leitura, com `SHA256SUMS`. Nunca são alterados.
 - `fatiados/`: G-codes fatiados pelo Bambu Studio a partir das variantes, guardados para validação (com `SHA256SUMS`).
 - `ferramentas/`: scripts Python somente leitura.
