@@ -101,3 +101,9 @@ O arquivo está em `fatiados/` e a análise em `analise/`.
 - **Divergência com a minha projeção.** O Bambu Studio prevê bem menos do que a projeção feita a partir do G-code de 1 peça: 4h37m por mesa sem timelapse. Não consigo explicar os ~47 min de diferença sem o G-code das 4 peças.
 - **Como mandar o G-code das 4 peças (44 MB).** Comprima em `.zip` antes de enviar; G-code costuma cair para menos de 1/4 do tamanho. Ou exporte o arquivo fatiado da placa (`.gcode.3mf`), que já vem comprimido.
 - **O número que vale** é o tempo real cronometrado da mesa de teste.
+
+### Teste de impressão (4 peças)
+
+- **Resultado relatado:** as peças ficaram iguais à peça de referência impressa com o G-code original, inclusive nas pontas das presas.
+- **Decisão:** o Arachne fica no projeto de produção. Ele não piorou o acabamento, e a troca para o gerador Clássico não é necessária.
+- **Pendente:** o tempo real cronometrado da mesa, para comparar com a previsão de 3h49m30s sem timelapse (4h02m com timelapse).
