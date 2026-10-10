@@ -71,7 +71,8 @@ def main():
     ap = argparse.ArgumentParser(description=__doc__.split('\n')[0])
     ap.add_argument('original')
     ap.add_argument('variante')
-    ap.add_argument('--folga-suporte', default='6.8,0,2.3,0',
+    # medido no G-code original (caminhos de extrusão, com largura de linha)
+    ap.add_argument('--folga-suporte', default='7.41,0.34,2.57,0.01',
                     help='quanto os suportes passam da malha em X-, X+, Y-, Y+ (mm)')
     ap.add_argument('--mesa', default='0,256,0,256')
     args = ap.parse_args()
@@ -142,8 +143,12 @@ def main():
                 gap_x = max(b[0] - a[1], a[0] - b[1])
                 gap_y = max(b[2] - a[3], a[2] - b[3])
                 gap = max(gap_x, gap_y)
+                # entre malhas, o "Organizar" do Bambu reserva 24 mm com suporte em árvore
+                mesh_gap = gap + (fx0 + fx1 if gap_x >= gap_y else fy0 + fy1)
                 flag = '' if gap >= 5 else '  ERRO: menos de 5 mm'
-                print(f'  folga {i}–{j}: {gap:.1f} mm{flag}')
+                note = '' if mesh_gap >= 24 else '  (abaixo dos 24 mm que o Organizar usa)'
+                print(f'  folga {i}–{j}: {gap:.1f} mm entre suportes, {mesh_gap:.1f} mm entre malhas'
+                      f'{flag}{note}')
                 ok &= gap >= 5
     print('\nResultado:', 'OK' if ok else 'COM ERROS')
     sys.exit(0 if ok else 1)
