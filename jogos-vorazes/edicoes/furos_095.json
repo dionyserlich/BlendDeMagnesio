@@ -1,0 +1,8 @@
+[
+  {"op": "subtrair_cilindro", "nome": "furo da cabeça da cobra, Ø0,95",
+   "p0": [4.131486327, 12.276792771, 26.3214264], "p1": [4.131486327, 12.276792771, 34.4735107],
+   "diametro": 0.95, "segmentos": 128},
+  {"op": "subtrair_cilindro", "nome": "furo da cabeça do pássaro, Ø0,95",
+   "p0": [2.153614453, -14.563710214, 27.83004], "p1": [2.153614453, -14.563710214, 34.4735107],
+   "diametro": 0.95, "segmentos": 128}
+]
