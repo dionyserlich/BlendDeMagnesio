@@ -19,4 +19,5 @@ Otimização do tempo de impressão para Bambu Lab A1 com PLA Silk dourado Maste
   - `projetar_cenarios.py`: projeta o tempo por peça com N peças por mesa, timelapse e aceleração, sem gerar G-code.
   - `gerar_variante_3mf.py`: gera um projeto novo a partir do original, copiando a malha byte a byte e alterando só as configurações e as instâncias pedidas.
   - `conferir_variante_3mf.py`: compara uma variante com o original (arquivos, configurações, instâncias, posição na mesa).
+  - `editar_malha_3mf.py`: aplica edições booleanas na malha (furos, cortes) e prova que nada mudou fora delas (requer `manifold3d`).
 - `analise/`: saídas dos scripts para os arquivos originais e para os fatiados.
