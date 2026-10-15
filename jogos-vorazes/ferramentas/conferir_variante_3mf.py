@@ -75,6 +75,8 @@ def main():
     ap.add_argument('--folga-suporte', default='7.41,0.34,2.57,0.01',
                     help='quanto os suportes passam da malha em X-, X+, Y-, Y+ (mm)')
     ap.add_argument('--mesa', default='0,256,0,256')
+    ap.add_argument('--malha-editada', action='store_true',
+                    help='a malha foi editada de propósito (editar_malha_3mf.py): não conta como erro')
     args = ap.parse_args()
     ok = True
     za, zb = zipfile.ZipFile(args.original), zipfile.ZipFile(args.variante)
@@ -91,8 +93,11 @@ def main():
             print(f'  ALTERADO   {name}')
     for name in ea:
         if name.startswith('3D/Objects/') and (name not in eb or ea[name].CRC != eb[name].CRC):
-            print(f'ERRO: malha alterada ou ausente: {name}')
-            ok = False
+            if name in eb and args.malha_editada:
+                print(f'  (malha editada de propósito: {name})')
+            else:
+                print(f'ERRO: malha alterada ou ausente: {name}')
+                ok = False
 
     diff, cfg = settings_diff(za.read(SETTINGS), zb.read(SETTINGS))
     print('\nConfigurações alteradas:')
